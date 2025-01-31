@@ -18,7 +18,9 @@ export default function PhoneVerification() {
   useEffect(() => {
     let timer;
     if (isOtpSent && countdown > 0) {
-      timer = setInterval(() => setCountdown((prev) => prev - 1), 1000);
+      timer = setInterval(() => {
+        setCountdown((prev) => prev - 1);
+      }, 1000);
     }
     return () => clearInterval(timer);
   }, [isOtpSent, countdown]);
@@ -46,9 +48,9 @@ export default function PhoneVerification() {
       <h1 className="text-xl font-bold text-blue-600">Telefon Doğrulama</h1>
       {!isOtpSent ? (
         <>
-          <label htmlFor="phone">Telefon Numarası</label>
+          <label htmlFor="phone-input" className="font-medium">Telefon Numarası</label>
           <Input
-            id="phone"
+            id="phone-input"
             type="tel"
             ref={phoneInputRef}
             placeholder="Telefon Numarası (5551234567)"
@@ -59,9 +61,9 @@ export default function PhoneVerification() {
         </>
       ) : (
         <>
-          <label htmlFor="otp">Doğrulama Kodu</label>
+          <label htmlFor="otp-input" className="font-medium">Doğrulama Kodu</label>
           <Input
-            id="otp"
+            id="otp-input"
             type="number"
             placeholder="Doğrulama Kodu"
             value={otp}
