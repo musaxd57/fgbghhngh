@@ -1,6 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 
 export default function PhoneVerification() {
   const [phone, setPhone] = useState("");
@@ -48,29 +46,39 @@ export default function PhoneVerification() {
       <h1 className="text-xl font-bold text-blue-600">Telefon Doğrulama</h1>
       {!isOtpSent ? (
         <>
-          <label htmlFor="phone-input" className="font-medium">Telefon Numarası</label>
-          <Input
-            id="phone-input"
+          <label htmlFor="phone" className="font-medium">
+            Telefon Numarası
+          </label>
+          <input
+            id="phone"
             type="tel"
             ref={phoneInputRef}
             placeholder="Telefon Numarası (5551234567)"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
+            className="border p-2 rounded"
           />
-          <Button onClick={sendOtp} className="bg-blue-600 text-white">Kodu Gönder</Button>
+          <button onClick={sendOtp} className="bg-blue-600 text-white px-4 py-2 rounded">
+            Kodu Gönder
+          </button>
         </>
       ) : (
         <>
-          <label htmlFor="otp-input" className="font-medium">Doğrulama Kodu</label>
-          <Input
-            id="otp-input"
+          <label htmlFor="otp" className="font-medium">
+            Doğrulama Kodu
+          </label>
+          <input
+            id="otp"
             type="number"
             placeholder="Doğrulama Kodu"
             value={otp}
             onChange={(e) => setOtp(e.target.value)}
+            className="border p-2 rounded"
           />
           <p className="text-gray-600">Yeniden kod gönder: {countdown}s</p>
-          <Button onClick={verifyOtp} className="bg-blue-600 text-white">Doğrula</Button>
+          <button onClick={verifyOtp} className="bg-blue-600 text-white px-4 py-2 rounded">
+            Doğrula
+          </button>
         </>
       )}
     </div>
