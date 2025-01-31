@@ -39,7 +39,9 @@ export default function PhoneVerification() {
       <h1 className="text-xl font-bold">Telefon Doğrulama</h1>
       {!isOtpSent ? (
         <>
+          <label htmlFor="phone">Telefon Numarası</label>
           <Input
+            id="phone"
             type="tel"
             placeholder="Telefon Numarası (5551234567)"
             value={phone}
@@ -49,7 +51,9 @@ export default function PhoneVerification() {
         </>
       ) : (
         <>
+          <label htmlFor="otp">Doğrulama Kodu</label>
           <Input
+            id="otp"
             type="number"
             placeholder="Doğrulama Kodu"
             value={otp}
