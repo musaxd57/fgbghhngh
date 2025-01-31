@@ -1,0 +1,53 @@
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+
+export default function PhoneVerification() {
+  const [phone, setPhone] = useState("");
+  const [otp, setOtp] = useState("");
+  const [isOtpSent, setIsOtpSent] = useState(false);
+
+  const sendOtp = () => {
+    if (phone.length === 10) {
+      setIsOtpSent(true);
+      alert("Doğrulama kodu gönderildi!");
+    } else {
+      alert("Geçerli bir telefon numarası girin!");
+    }
+  };
+
+  const verifyOtp = () => {
+    if (otp.length === 6) {
+      alert("Telefon doğrulandı!");
+    } else {
+      alert("Geçerli bir doğrulama kodu girin!");
+    }
+  };
+
+  return (
+    <div className="flex flex-col items-center p-6 space-y-4 bg-gray-100 min-h-screen">
+      <h1 className="text-xl font-bold">Telefon Doğrulama</h1>
+      {!isOtpSent ? (
+        <>
+          <Input
+            type="tel"
+            placeholder="Telefon Numarası (5551234567)"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+          <Button onClick={sendOtp}>Kodu Gönder</Button>
+        </>
+      ) : (
+        <>
+          <Input
+            type="number"
+            placeholder="Doğrulama Kodu"
+            value={otp}
+            onChange={(e) => setOtp(e.target.value)}
+          />
+          <Button onClick={verifyOtp}>Doğrula</Button>
+        </>
+      )}
+    </div>
+  );
+}
