@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+mport { useState, useEffect, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -7,6 +7,13 @@ export default function PhoneVerification() {
   const [otp, setOtp] = useState("");
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [countdown, setCountdown] = useState(30);
+  const phoneInputRef = useRef(null);
+
+  useEffect(() => {
+    if (phoneInputRef.current) {
+      phoneInputRef.current.focus();
+    }
+  }, []);
 
   useEffect(() => {
     let timer;
@@ -36,18 +43,19 @@ export default function PhoneVerification() {
 
   return (
     <div className="flex flex-col items-center p-6 space-y-4 bg-gray-100 min-h-screen">
-      <h1 className="text-xl font-bold">Telefon Doğrulama</h1>
+      <h1 className="text-xl font-bold text-blue-600">Telefon Doğrulama</h1>
       {!isOtpSent ? (
         <>
           <label htmlFor="phone">Telefon Numarası</label>
           <Input
             id="phone"
             type="tel"
+            ref={phoneInputRef}
             placeholder="Telefon Numarası (5551234567)"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
           />
-          <Button onClick={sendOtp}>Kodu Gönder</Button>
+          <Button onClick={sendOtp} className="bg-blue-600 text-white">Kodu Gönder</Button>
         </>
       ) : (
         <>
@@ -60,7 +68,7 @@ export default function PhoneVerification() {
             onChange={(e) => setOtp(e.target.value)}
           />
           <p className="text-gray-600">Yeniden kod gönder: {countdown}s</p>
-          <Button onClick={verifyOtp}>Doğrula</Button>
+          <Button onClick={verifyOtp} className="bg-blue-600 text-white">Doğrula</Button>
         </>
       )}
     </div>
