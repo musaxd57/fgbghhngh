@@ -1,86 +1,97 @@
-import { useState, useEffect, useRef } from "react";
-
-export default function PhoneVerification() {
-  const [phone, setPhone] = useState("");
-  const [otp, setOtp] = useState("");
-  const [isOtpSent, setIsOtpSent] = useState(false);
-  const [countdown, setCountdown] = useState(30);
-  const phoneInputRef = useRef(null);
-
-  useEffect(() => {
-    if (phoneInputRef.current) {
-      phoneInputRef.current.focus();
-    }
-  }, []);
-
-  useEffect(() => {
-    let timer;
-    if (isOtpSent && countdown > 0) {
-      timer = setInterval(() => {
-        setCountdown((prev) => prev - 1);
-      }, 1000);
-    }
-    return () => clearInterval(timer);
-  }, [isOtpSent, countdown]);
-
-  const sendOtp = () => {
-    if (phone.length === 10) {
-      setIsOtpSent(true);
-      setCountdown(30);
-      alert("Doğrulama kodu gönderildi!");
-    } else {
-      alert("Geçerli bir telefon numarası girin!");
-    }
-  };
-
-  const verifyOtp = () => {
-    if (otp.length === 6) {
-      alert("Telefon doğrulandı!");
-    } else {
-      alert("Geçerli bir doğrulama kodu girin!");
-    }
-  };
-
-  return (
-    <div className="flex flex-col items-center p-6 space-y-4 bg-gray-100 min-h-screen">
-      <h1 className="text-xl font-bold text-blue-600">Telefon Doğrulama</h1>
-      {!isOtpSent ? (
-        <>
-          <label htmlFor="phone" className="font-medium">
-            Telefon Numarası
-          </label>
-          <input
-            id="phone"
-            type="tel"
-            ref={phoneInputRef}
-            placeholder="Telefon Numarası (5551234567)"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className="border p-2 rounded"
-          />
-          <button onClick={sendOtp} className="bg-blue-600 text-white px-4 py-2 rounded">
-            Kodu Gönder
-          </button>
-        </>
-      ) : (
-        <>
-          <label htmlFor="otp" className="font-medium">
-            Doğrulama Kodu
-          </label>
-          <input
-            id="otp"
-            type="number"
-            placeholder="Doğrulama Kodu"
-            value={otp}
-            onChange={(e) => setOtp(e.target.value)}
-            className="border p-2 rounded"
-          />
-          <p className="text-gray-600">Yeniden kod gönder: {countdown}s</p>
-          <button onClick={verifyOtp} className="bg-blue-600 text-white px-4 py-2 rounded">
-            Doğrula
-          </button>
-        </>
-      )}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telefon Doğrulama</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f3f4f6;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        input {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+        }
+        button {
+            background-color: #2563eb;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Telefon Doğrulama</h1>
+        <div id="phoneStep">
+            <label for="phone">Telefon Numarası</label>
+            <input type="tel" id="phone" placeholder="Telefon Numarası (5551234567)" required>
+            <button onclick="sendOtp()">Kodu Gönder</button>
+        </div>
+        <div id="otpStep" class="hidden">
+            <label for="otp">Doğrulama Kodu</label>
+            <input type="number" id="otp" placeholder="Doğrulama Kodu" required>
+            <p>Yeniden kod gönder: <span id="countdown">30</span>s</p>
+            <button onclick="verifyOtp()">Doğrula</button>
+        </div>
     </div>
-  );
-}
+
+    <script>
+        let countdown = 30;
+        let timer;
+
+        function sendOtp() {
+            const phone = document.getElementById("phone").value;
+            if (phone.length === 10) {
+                document.getElementById("phoneStep").classList.add("hidden");
+                document.getElementById("otpStep").classList.remove("hidden");
+                document.getElementById("countdown").textContent = countdown;
+                alert("Doğrulama kodu gönderildi!");
+                startCountdown();
+            } else {
+                alert("Geçerli bir telefon numarası girin!");
+            }
+        }
+
+        function startCountdown() {
+            clearInterval(timer);
+            countdown = 30;
+            timer = setInterval(() => {
+                countdown--;
+                document.getElementById("countdown").textContent = countdown;
+                if (countdown <= 0) {
+                    clearInterval(timer);
+                }
+            }, 1000);
+        }
+
+        function verifyOtp() {
+            const otp = document.getElementById("otp").value;
+            if (otp.length === 6) {
+                alert("Telefon doğrulandı!");
+            } else {
+                alert("Geçerli bir doğrulama kodu girin!");
+            }
+        }
+    </script>
+</body>
+</html>
