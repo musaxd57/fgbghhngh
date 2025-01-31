@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -6,10 +6,20 @@ export default function PhoneVerification() {
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [isOtpSent, setIsOtpSent] = useState(false);
+  const [countdown, setCountdown] = useState(30);
+
+  useEffect(() => {
+    let timer;
+    if (isOtpSent && countdown > 0) {
+      timer = setInterval(() => setCountdown((prev) => prev - 1), 1000);
+    }
+    return () => clearInterval(timer);
+  }, [isOtpSent, countdown]);
 
   const sendOtp = () => {
     if (phone.length === 10) {
       setIsOtpSent(true);
+      setCountdown(30);
       alert("Doğrulama kodu gönderildi!");
     } else {
       alert("Geçerli bir telefon numarası girin!");
@@ -45,6 +55,7 @@ export default function PhoneVerification() {
             value={otp}
             onChange={(e) => setOtp(e.target.value)}
           />
+          <p className="text-gray-600">Yeniden kod gönder: {countdown}s</p>
           <Button onClick={verifyOtp}>Doğrula</Button>
         </>
       )}
